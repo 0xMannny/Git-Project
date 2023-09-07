@@ -22,7 +22,7 @@ public class ABlob {
         return sb.toString();
     }
 
-    public void blobFile(File fileR) throws FileNotFoundException, IOException, NoSuchAlgorithmException {
+    public String blobFile(File fileR) throws FileNotFoundException, IOException, NoSuchAlgorithmException {
         String temp = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(fileR))) {
             int i = 0;
@@ -45,5 +45,6 @@ public class ABlob {
         writer.write(temp);
         writer.flush();
         writer.close();
+        return result;
     }
 }

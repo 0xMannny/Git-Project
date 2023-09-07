@@ -5,8 +5,9 @@ import java.security.NoSuchAlgorithmException;
 
 public class GitTester {
     public static void main(String[] args) throws FileNotFoundException, NoSuchAlgorithmException, IOException {
-        ABlob blob = new ABlob();
+        Index index = new Index();
+        index.init();
         File file = new File("try.txt");
-        blob.blobFile(file);
+        index.add(file);
     }
 }
