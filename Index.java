@@ -57,18 +57,18 @@ public class Index {
 
     public void add(File file) throws FileNotFoundException, NoSuchAlgorithmException, IOException {
         String hash = blob.sha1(readFile(file));
-        if (!(filesToHash.contains(file.getName() + " : " + hash + ".txt"))) {
+        if (!(filesToHash.contains(file.getName() + " : " + hash))) {
             File temp = blob.blobFile(file);
             hashToFile.put(hash, temp);
         }
-        filesToHash.add(file.getName() + " : " + hash + ".txt");
+        filesToHash.add(file.getName() + " : " + hash);
         updateIndex();
     }
 
     public void remove(File file) throws IOException, NoSuchAlgorithmException {
         String hash = blob.sha1(readFile(file));
-        filesToHash.remove(file.getName() + " : " + hash + ".txt");
-        if (!(filesToHash.contains(file.getName() + " : " + hash + ".txt"))) {
+        filesToHash.remove(file.getName() + " : " + hash);
+        if (!(filesToHash.contains(file.getName() + " : " + hash))) {
             hashToFile.get(hash).delete();
             hashToFile.remove(hash);
         }

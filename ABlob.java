@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 
 public class ABlob {
     public ABlob() {
-
+        
     }
 
     public String sha1(String input) throws NoSuchAlgorithmException {
@@ -39,7 +39,7 @@ public class ABlob {
             }
         }
         String result = sha1(temp);
-        File file = new File("./objects/" + result + ".txt");
+        File file = new File("./objects/" + result);
         file.createNewFile();
         FileWriter writer = new FileWriter(file);
         writer.write(temp);
