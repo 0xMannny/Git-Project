@@ -11,6 +11,7 @@ public class GitTester {
         index.add(file);
         File file2 = new File("try2.txt");
         index.add(file2);
+        index.add(file2);
         index.add(file);
         index.remove(file2);
     }

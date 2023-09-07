@@ -1,11 +1,12 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Index {
     ABlob blob;
@@ -35,8 +36,27 @@ public class Index {
         writer.close();
     }
 
+    public String readFile(File file) throws FileNotFoundException, IOException {
+        String output = "";
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            int i = 0;
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
+                if (i == 1) {
+                    output += "\n";
+                }
+                output += line;
+                i = 1;
+            }
+        }
+        return output;
+    }
+
     public void add(File file) throws FileNotFoundException, NoSuchAlgorithmException, IOException {
-        String hash = blob.sha1(file.getName());
+        String hash = blob.sha1(readFile(file));
         if (!(filesToHash.contains(file.getName() + " : " + hash + ".txt"))) {
             File temp = blob.blobFile(file);
             hashToFile.put(hash, temp);
@@ -46,7 +66,7 @@ public class Index {
     }
 
     public void remove(File file) throws IOException, NoSuchAlgorithmException {
-        String hash = blob.sha1(file.getName());
+        String hash = blob.sha1(readFile(file));
         filesToHash.remove(file.getName() + " : " + hash + ".txt");
         if (!(filesToHash.contains(file.getName() + " : " + hash + ".txt"))) {
             hashToFile.get(hash).delete();
