@@ -22,7 +22,7 @@ public class ABlob {
         return sb.toString();
     }
 
-    public String blobFile(File fileR) throws FileNotFoundException, IOException, NoSuchAlgorithmException {
+    public File blobFile(File fileR) throws FileNotFoundException, IOException, NoSuchAlgorithmException {
         String temp = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(fileR))) {
             int i = 0;
@@ -39,12 +39,12 @@ public class ABlob {
             }
         }
         String result = sha1(temp);
-        File file = new File("./objects/" + result);
+        File file = new File("./objects/" + result + ".txt");
         file.createNewFile();
         FileWriter writer = new FileWriter(file);
         writer.write(temp);
         writer.flush();
         writer.close();
-        return result;
+        return file;
     }
 }
