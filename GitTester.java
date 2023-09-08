@@ -10,6 +10,7 @@ public class GitTester {
         File file = new File("try.txt");
         index.add(file);
         index.add(file);
+        index.remove(file);
         File file2 = new File("try2.txt");
         index.add(file2);
         index.remove(file2);

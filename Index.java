@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public class Index {
     ABlob blob;
-    private ArrayList<String> filesToHash;
+    private ArrayList<String> namesAndHashes;
     
     public Index() {
         blob = new ABlob();
-        filesToHash = new ArrayList<>();
+        namesAndHashes = new ArrayList<>();
     }
 
     public void init() throws IOException {
@@ -24,8 +24,8 @@ public class Index {
 
     public void updateIndex() throws IOException {
         String output = "";
-        for (int i = 0; i < filesToHash.size(); i++) {
-            output += filesToHash.get(i) + "\n";
+        for (int i = 0; i < namesAndHashes.size(); i++) {
+            output += namesAndHashes.get(i) + "\n";
         }
         FileWriter writer = new FileWriter("./index.txt");
         writer.write(output);
@@ -54,17 +54,17 @@ public class Index {
 
     public void add(File file) throws FileNotFoundException, NoSuchAlgorithmException, IOException {
         String hash = blob.sha1(readFile(file));
-        if (!(filesToHash.contains(file.getName() + " : " + hash))) {
+        if (!(namesAndHashes.contains(file.getName() + " : " + hash))) {
             blob.blobFile(file);
-            filesToHash.add(file.getName() + " : " + hash);
+            namesAndHashes.add(file.getName() + " : " + hash);
         }
         updateIndex();
     }
 
     public void remove(File file) throws IOException, NoSuchAlgorithmException {
         String hash = blob.sha1(readFile(file));
-        if (filesToHash.contains(file.getName() + " : " + hash)) {
-            filesToHash.remove(file.getName() + " : " + hash);
+        if (namesAndHashes.contains(file.getName() + " : " + hash)) {
+            namesAndHashes.remove(file.getName() + " : " + hash);
         }
         updateIndex();
     }
