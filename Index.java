@@ -18,7 +18,7 @@ public class Index {
 
     public void init() throws IOException {
         new File("./objects").mkdir();
-        File index = new File("./index");
+        File index = new File("./index.txt");
         index.createNewFile();
     }
 
