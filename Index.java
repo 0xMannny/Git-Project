@@ -27,7 +27,7 @@ public class Index {
         for (int i = 0; i < namesAndHashes.size(); i++) {
             output += namesAndHashes.get(i) + "\n";
         }
-        FileWriter writer = new FileWriter("./index.txt");
+        FileWriter writer = new FileWriter("./index");
         writer.write(output);
         writer.flush();
         writer.close();
