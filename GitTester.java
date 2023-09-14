@@ -12,8 +12,10 @@ public class GitTester {
         File file2 = new File("try2.txt");
         index.add(file2);
         Tree t = new Tree();
-        t.addFile("blob : b444ac06613fc8d63795be9ad0beaf55011936ac : try.txt");
-        t.addFile("hello");
+        t.initialize();
+        t.addToTree("blob : b444ac06613fc8d63795be9ad0beaf55011936ac : try.txt");
+        t.addToTree("hello");
+        t.save();
 
     }
 }
