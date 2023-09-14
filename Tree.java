@@ -27,6 +27,26 @@ public class Tree
         sha = blob.sha1(fileInfo);
         return sha;
     }
+    //need to fix
+    public Boolean alrInTreeBlob(String shaStuff, String fileName) throws IOException, NoSuchAlgorithmException
+    {
+        BufferedReader br = new BufferedReader(new FileReader("./objects/"+oldName));
+        ABlob currentBlob = new ABlob();
+        String SHA1_of_file = currentBlob.sha1(fileName);
+        StringBuilder currentString = new StringBuilder();
+        while(br.ready())
+        {
+            currentString.append(br.readLine());
+            if(currentString.indexOf(SHA1_of_file) > -1)
+            {
+                return true;
+            }
+            currentString.setLength(0);
+            
+        }
+        br.close();
+        return false;
+    }
 
 
     public void addFile(String newFileForTree) throws IOException, NoSuchAlgorithmException
@@ -65,7 +85,7 @@ public class Tree
         bw.write(newFileForTree);
         bw.close();   
     }
-
+    //need to write
     public void removeFile(String file)
     {
         
