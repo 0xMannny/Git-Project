@@ -1,48 +1,94 @@
-
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.MessageDigest;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Formatter;
-import java.util.Scanner;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 public class IndexTest {
-    @Test
-    void testAdd() {
+    private Index index;
 
+    @Before
+    public void setUp() {
+        index = new Index();
     }
 
     @Test
-    void testInit() {
+    public void testInit() throws IOException {
+        // Test if the init method creates the necessary directories and files
+        index.init();
+        File objectsDir = new File("./objects");
+        File indexFile = new File("./index.txt");
 
+        assertTrue(objectsDir.exists() && objectsDir.isDirectory());
+        assertTrue(indexFile.exists() && indexFile.isFile());
     }
 
     @Test
-    void testReadFile() {
+    public void testAdd() throws IOException, NoSuchAlgorithmException {
+        // Test adding and removing files from the index
+        File testFile = new File("./test.txt");
+        testFile.createNewFile();
 
+        // Add the file to the index
+        index.add(testFile);
+        BufferedReader br = new BufferedReader(new FileReader(testFile));
+        StringBuilder sb = new StringBuilder();
+        while(br.ready())
+        {
+            sb.append(br.readLine()+"\n");
+        }
+        String sbAsString = sb.toString();
+        assertTrue(sbAsString.contains(testFile.getName() + " : " + index.blob.sha1(testFile)));
+    }
+
+     @Test
+    public void testRemove() throws IOException, NoSuchAlgorithmException {
+        // Test adding and removing files from the index
+        File testFile = new File("./test.txt");
+        testFile.createNewFile();
+
+        // Remove the file from the index
+        index.remove(testFile);
+        BufferedReader br = new BufferedReader(new FileReader(testFile));
+        StringBuilder sb = new StringBuilder();
+        while(br.ready())
+        {
+            sb.append(br.readLine()+"\n");
+        }
+        String sbAsString = sb.toString();
+        assertFalse(sbAsString.contains(testFile.getName() + " : " + index.blob.sha1(index.readFile(testFile))));
     }
 
     @Test
-    void testRemove() {
+    public void testReadFile() throws IOException {
+        // Test the readFile method
+        File testFile = new File("./test.txt");
+        String content = "Test file content";
+        FileWriter fileWriter = new FileWriter(testFile);
+        fileWriter.write(content);
+        fileWriter.close();
 
+        String readContent = index.readFile(testFile);
+        assertEquals(content, readContent);
     }
 
     @Test
-    void testUpdateIndex() {
+    public void testUpdateIndex() throws IOException, NoSuchAlgorithmException {
+        // Test the updateIndex method
+        File testFile = new File("./test.txt");
+        testFile.createNewFile();
 
+        // Add the file to the index
+        index.add(testFile);
+
+        // Update the index and check if the file is present in the index file
+        index.updateIndex();
+        String indexContent = index.readFile(new File("./index.txt"));
+        assertTrue(indexContent.contains(testFile.getName()));
     }
 }

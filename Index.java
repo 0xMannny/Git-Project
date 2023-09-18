@@ -22,6 +22,8 @@ public class Index {
         index.createNewFile();
     }
 
+    public void sha1() 
+
     public void updateIndex() throws IOException {
         String output = "";
         for (int i = 0; i < namesAndHashes.size(); i++) {
