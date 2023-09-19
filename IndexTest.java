@@ -31,6 +31,7 @@ public class IndexTest {
     @Test
     public void testAdd() throws IOException, NoSuchAlgorithmException {
         // Test adding and removing files from the index
+        String testFileName = "./test.txt";
         File testFile = new File("./test.txt");
         testFile.createNewFile();
 
@@ -43,7 +44,7 @@ public class IndexTest {
             sb.append(br.readLine()+"\n");
         }
         String sbAsString = sb.toString();
-        assertTrue(sbAsString.contains(testFile.getName() + " : " + index.blob.sha1(testFile)));
+        assertTrue(sbAsString.contains(testFile.getName() + " : " + index.sha1(testFileName)));
     }
 
      @Test

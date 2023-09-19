@@ -22,7 +22,20 @@ public class Index {
         index.createNewFile();
     }
 
-    public void sha1() 
+    public String sha1(String FiletoSha1) throws IOException, NoSuchAlgorithmException
+    {
+        ABlob b = new ABlob();
+        BufferedReader br = new BufferedReader(new FileReader(FiletoSha1));
+        StringBuilder sb = new StringBuilder();
+        while(br.ready())
+        {
+            sb.append(br.readLine() + "\n");
+        }
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 1);
+        }
+        return b.sha1(sb.toString());
+    } 
 
     public void updateIndex() throws IOException {
         String output = "";

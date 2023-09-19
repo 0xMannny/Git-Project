@@ -39,11 +39,12 @@ public class TreeTest {
         tree.save();
 
         // Verify that a new file was created in the objects directory
+        String fileName = ("./objects/" + tree.oldName);
         File newFile = new File("./objects/" + tree.oldName);
         assertTrue(newFile.exists());
 
-        // Verify that the file content is as expected
-        String fileContent = readFileContent(newFile);
+        // Verify that the file content is as expectedBufferedReader br = new BufferedReader(new FileReader(testFile));
+        String fileContent = readFileContent(fileName);
         assertEquals(treeContent, fileContent);
     }
 
@@ -65,14 +66,7 @@ public class TreeTest {
         tree.addToTree(fileName);
 
         // Verify that the file was added to the tree
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        StringBuilder sb = new StringBuilder();
-        while(br.ready())
-        {
-            sb.append(br.readLine()+"\n");
-        }
-        String treeContent = sb.toString();
-        br.close();
+        String treeContent = readFileContent(fileName);
         assertTrue(treeContent.contains(fileName));
     }
 
@@ -86,18 +80,11 @@ public class TreeTest {
         tree.removeFromTree(fileNameToRemove);
 
         // Verify that the file was removed from the tree
-        BufferedReader br = new BufferedReader(new FileReader(fileNameToRemove));
-        StringBuilder sb = new StringBuilder();
-        while(br.ready())
-        {
-            sb.append(br.readLine()+"\n");
-        }
-        String RemoveTreeContent = sb.toString();
-        br.close();
+        String RemoveTreeContent = readFileContent(fileNameToRemove);
         assertFalse(RemoveTreeContent.contains(fileNameToRemove));
     }
 
-    private String readFileContent(File newFile) throws IOException {
+    private String readFileContent(String newFile) throws IOException {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(newFile))) {
             String line;

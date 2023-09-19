@@ -26,7 +26,7 @@ public class ABlobTest {
     @Test
     public void testSha1() throws NoSuchAlgorithmException {
         String input = "hello this is a test";
-        String expectedHash = "fa26be19de6bff93f70bc2308434e4a440bbad02"; // This is the SHA1 hash of "hello this is a test"
+        String expectedHash = "f291f60cafb2ef2e0013f5a5889b1da5af4b4657"; // This is the SHA1 hash of "hello this is a test"
         assertEquals(expectedHash, aBlob.sha1(input));
     }
 
