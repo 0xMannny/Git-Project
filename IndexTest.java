@@ -56,7 +56,7 @@ public class IndexTest {
             sb.append(br.readLine()+"\n");
         }
         String sbAsString = sb.toString();
-        assertTrue(sbAsString.contains(fileToTest + " : " + b.sha1("dc724af18fbdd4e59189f5fe768a5f8311527050")));
+        assertTrue(sbAsString.contains(fileToTest + " : dc724af18fbdd4e59189f5fe768a5f8311527050"));
     }
 
      @Test
