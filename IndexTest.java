@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,10 +12,24 @@ import java.security.NoSuchAlgorithmException;
 
 public class IndexTest {
     private Index index;
+    private static String fileToTest = "fileToTest.txt";
+    File file;
+    private ABlob b;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException
+    {
+        file = new File(fileToTest);
+        file.createNewFile();
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(fileToTest));
+
+        bw.write("testing");
+        bw.close();
+
         index = new Index();
+        b = new ABlob();
+
     }
 
     @Test
@@ -31,25 +46,22 @@ public class IndexTest {
     @Test
     public void testAdd() throws IOException, NoSuchAlgorithmException {
         // Test adding and removing files from the index
-        String testFileName = "./test.txt";
-        File testFile = new File("./test.txt");
-        testFile.createNewFile();
 
         // Add the file to the index
-        index.add(testFile);
-        BufferedReader br = new BufferedReader(new FileReader(testFile));
+        index.add(file);
+        BufferedReader br = new BufferedReader(new FileReader(fileToTest));
         StringBuilder sb = new StringBuilder();
         while(br.ready())
         {
             sb.append(br.readLine()+"\n");
         }
         String sbAsString = sb.toString();
-        assertTrue(sbAsString.contains(testFile.getName() + " : " + index.sha1(testFileName)));
+        assertTrue(sbAsString.contains(fileToTest + " : " + b.sha1("dc724af18fbdd4e59189f5fe768a5f8311527050")));
     }
 
      @Test
     public void testRemove() throws IOException, NoSuchAlgorithmException {
-        // Test adding and removing files from the index
+        // Test adding and removing files from th3e index
         File testFile = new File("./test.txt");
         testFile.createNewFile();
 
