@@ -1,0 +1,79 @@
+[
+    {
+        "className": "ABlob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "sha1",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "input"
+                ]
+            },
+            {
+                "methodName": "blobFile",
+                "parameters": [
+                    "File"
+                ],
+                "values": [
+                    "fileR"
+                ]
+            }
+        ]
+    },
+    {
+        "className": "Index",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "init",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "updateIndex",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "readFile",
+                "parameters": [
+                    "File"
+                ],
+                "values": [
+                    "file"
+                ]
+            },
+            {
+                "methodName": "add",
+                "parameters": [
+                    "File"
+                ],
+                "values": [
+                    "file"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": [
+                    "File"
+                ],
+                "values": [
+                    "file"
+                ]
+            }
+        ]
+    }
+]
