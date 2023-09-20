@@ -70,6 +70,7 @@ public class Tree
         bw.close();   
     }
 
+    //sarah what is this 
     File f;
 
     public void save()throws IOException, NoSuchAlgorithmException
