@@ -19,6 +19,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;  
+
 public class CommitTest {
 
     private static String testFile = "testfile.txt";
@@ -57,7 +60,11 @@ public class CommitTest {
 
     @Test
     void testGetDate() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
+        LocalDateTime now = LocalDateTime.now();  
+        String curDate = dtf.format(now);
 
+        assertTrue ("date was not correct", curDate.equals(Commit.getDate()));
     }
 
     @Test

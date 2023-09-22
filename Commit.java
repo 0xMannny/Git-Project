@@ -47,7 +47,7 @@ public class Commit {
         this.summary = summary; 
     }
 
-    public String getDate ()
+    public static String getDate ()
     {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
         LocalDateTime now = LocalDateTime.now();  
