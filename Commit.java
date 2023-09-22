@@ -13,8 +13,11 @@ public class Commit {
     private String author; 
     private String date; 
 
+    private StringBuilder contents;
+
     public Commit (String author, String summary) throws Exception
     {
+        contents = new StringBuilder();
         lastCommit = "";
         nextCommit = "";
 
@@ -23,6 +26,13 @@ public class Commit {
         this.tree = createTree();
         this.author = author; 
         this.summary = summary; 
+
+        contents.append(this.tree+"\n");
+        contents.append(this.lastCommit + "\n");
+        contents.append(this.nextCommit + "\n");
+        contents.append(this.author + "\n");
+        contents.append(this.date + "\n");
+        contents.append(this.summary);
     }
 
     public Commit (String author, String summary, String lastCommit) throws Exception
@@ -53,24 +63,17 @@ public class Commit {
         return t.save();
     }
 
+    public String getSHA1 () throws Exception
+    {
+        return ABlob.sha1(contents.toString());
+    }
+
     public void writeToFile () throws Exception 
     {
-        //first add all the data to a stringbuilder
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(tree+"\n");
-        sb.append(lastCommit + "\n");
-        sb.append(nextCommit + "\n");
-        sb.append(author + "\n");
-        sb.append(date + "\n");
-        sb.append(summary);
-
-        //then print the data to the SHA1 of the contents 
-        
-        String hash = ABlob.sha1(sb.toString());
+        String hash = getSHA1();
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("./objects/" + hash)));
 
-        pw.print(sb.toString());
+        pw.print(contents.toString());
 
         pw.close();
 
