@@ -68,8 +68,23 @@ public class CommitTest {
     }
 
     @Test
-    void testGetSHA1() {
+    void testGetSHA1() throws Exception{
+        //FIXME: this eventually won't work when we update Commits to actually have full functionality
 
+        Commit c = new Commit ("luke", "bleh");
+        
+        StringBuilder contents = new StringBuilder("");
+       contents.append("f3f6a1540a168e8c332ef06679ccb57649b957b1\n"); //the sha1 for an empty tree ig
+
+       //the two empty commits
+       contents.append("\n");
+       contents.append("\n");
+
+       contents.append("luke\n");
+       contents.append(Commit.getDate()+"\n");
+       contents.append("bleh\n");
+
+       assertTrue("The sha does not match the expected value", ABlob.sha1(contents.toString()).equals(c.getSHA1()));
     }
 
     @Test
