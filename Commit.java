@@ -78,4 +78,9 @@ public class Commit {
         pw.close();
 
     }
+
+    public String getContents () 
+    {
+        return contents.toString();
+    }
 }
