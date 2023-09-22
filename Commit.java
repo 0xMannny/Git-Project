@@ -25,6 +25,18 @@ public class Commit {
         this.summary = summary; 
     }
 
+    public Commit (String author, String summary, String lastCommit) throws Exception
+    {
+        this.lastCommit = lastCommit;
+        nextCommit = "";
+
+        date = getDate();
+
+        this.tree = createTree();
+        this.author = author; 
+        this.summary = summary; 
+    }
+
     public String getDate ()
     {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
