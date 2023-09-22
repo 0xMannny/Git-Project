@@ -25,10 +25,7 @@ public class Tree
 
     private String getShaOfFileContent(String fileInfo) throws IOException, NoSuchAlgorithmException
     {
-        String sha = "";
-        ABlob blob = new ABlob();
-        sha = blob.sha1(fileInfo);
-        return sha;
+        return ABlob.sha1(fileInfo);
     }
     //need to fix
 
@@ -70,9 +67,7 @@ public class Tree
         bw.close();   
     }
 
-    File f;
-
-    public void save()throws IOException, NoSuchAlgorithmException
+    public String save() throws IOException, NoSuchAlgorithmException
     {
         BufferedReader br = new BufferedReader(new FileReader("tree"));
         StringBuilder sb = new StringBuilder();
@@ -88,7 +83,9 @@ public class Tree
         BufferedWriter bw = new BufferedWriter(new FileWriter("./objects/"+sha));
         bw.write(sb.toString());
         bw.close();
+        br.close();
 
+        return sha;
     }
 
     //checks if the file is already in the Index list
@@ -154,6 +151,7 @@ public class Tree
 
     public void initialize() throws IOException
     {
+        File f; 
         new File("objects").mkdirs();
         f = new File("tree");
         f.createNewFile();
