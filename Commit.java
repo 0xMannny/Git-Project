@@ -1,8 +1,8 @@
 import java.util.*;
-
-import org.hamcrest.SelfDescribing;
-
 import java.io.*; 
+
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
 
 public class Commit {
     private Commit lastCommit;
@@ -12,27 +12,30 @@ public class Commit {
     private String author; 
     private String date; 
 
-    private StringBuilder contents;
-
-    public Commit ()
+    public Commit (String author, String summary)
     {
         lastCommit = null;
         nextCommit = null;
 
-        contents = new StringBuilder();
-
-        Tree t = new Tree();
-        
+        date = getDate();
+        this.author = author; 
+        this.summary = summary; 
     }
 
     public String getDate ()
     {
-        return date; 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
+        LocalDateTime now = LocalDateTime.now();  
+        return dtf.format(now); 
     }
 
-    public void createTree ()
-    {
+    public String createTree () throws Exception 
+    { 
+        //now add every file to the tree
+        //NB: tree can just be blank right now
+        Tree t = new Tree();
 
+        return t.save();
     }
 
     public void writeToFile () throws Exception 
