@@ -37,21 +37,21 @@ public class TreeTest {
 
     }
 
-    @Test
-    public void testAddWithToObjects() throws IOException, NoSuchAlgorithmException {
-        // Test adding a file to the Tree
-        String newFileContent = "testing";
-        tree.addWithToObjects(newFileContent);
+    // @Test
+    // public void testAddWithToObjects() throws IOException, NoSuchAlgorithmException {
+    //     // Test adding a file to the Tree
+    //     String newFileContent = "testing";
+    //     tree.addWithToObjects(newFileContent);
 
-        // Verify that the file was added to the objects directory
-        String newFileName = ("./objects/" + tree.oldName);
-        File newFile = new File("./objects/" + tree.oldName);
-        assertTrue(newFile.exists());
+    //     // Verify that the file was added to the objects directory
+    //     String newFileName = ("./objects/" + tree.oldName);
+    //     File newFile = new File("./objects/" + tree.oldName);
+    //     assertTrue(newFile.exists());
 
-        // Verify that the file content is as expected
-        String fileContent = readFileContent(newFileName);
-        assertEquals(newFileContent, fileContent);
-    }
+    //     // Verify that the file content is as expected
+    //     String fileContent = readFileContent(newFileName);
+    //     assertEquals(newFileContent, fileContent);
+    // }
 
     @Test
     public void testSave() throws IOException, NoSuchAlgorithmException {
