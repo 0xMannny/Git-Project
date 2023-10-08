@@ -21,8 +21,8 @@ public class Commit {
 
     public Commit (String author, String summary, String lastCommit) throws Exception
     {
-        this.tree = createTree();
         this.lastCommit = lastCommit;
+        this.tree = createTree();
         this.nextCommit = "";
         this.summary = summary;
         this.author = author; 
@@ -154,6 +154,7 @@ public class Commit {
         File commit = new File("objects/" + commitHash);
         BufferedReader br = new BufferedReader(new FileReader(commit));
         String text = br.readLine();
+        br.close();
         return text;
     }
 }

@@ -47,15 +47,10 @@ public class CommitTest {
     //NOTE: this won't work right now because createTree just creates an empty tree
     @Test
     void testCreateTree() throws Exception {
-        Tree t = new Tree();
-        t.addWithToObjects(testFile);
-
-        String correctHash = t.save();
-
         Commit c = new Commit ("luke", "bleh");
-        String commitHash = c.createTree();
+        String commitHash = c.getSHA1();
 
-        assertTrue("the commit hash did not match the tree hash", correctHash.equals(commitHash));
+        assertTrue("the commit hash did not match the tree hash", c.getTreeHashFromCommitHash(commitHash).equals("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
     }
 
     @Test

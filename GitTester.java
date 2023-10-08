@@ -3,13 +3,13 @@ import java.nio.file.Paths;
 
 public class GitTester {
     public static void main(String[] args) throws Exception {
-        File directory = Paths.get("./advancedTest").toFile();
+        // File directory = Paths.get("./advancedTest").toFile();
 
-        Tree tree = new Tree();
-        tree.initialize();
+        // Tree tree = new Tree();
+        // tree.initialize();
 
-        tree.addDirectory(directory);
+        // tree.addDirectory(directory);
 
-        // Commit c = new Commit("luke", "bleh");
+        Commit c = new Commit("luke", "bleh");
     }
 }

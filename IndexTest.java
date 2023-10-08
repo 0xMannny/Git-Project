@@ -57,7 +57,7 @@ public class IndexTest {
             sb.append(br.readLine()+"\n");
         }
         String sbAsString = sb.toString();
-        assertTrue(sbAsString.contains(fileToTest + " : dc724af18fbdd4e59189f5fe768a5f8311527050"));
+        assertTrue(sbAsString.contains("blob : dc724af18fbdd4e59189f5fe768a5f8311527050 : " + fileToTest));
     }
 
      @Test

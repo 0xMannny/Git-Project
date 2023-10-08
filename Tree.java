@@ -86,7 +86,7 @@ public class Tree {
     }
 
     public String save() throws IOException, NoSuchAlgorithmException {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("");
         for (String value : values) {
             sb.append(value + "\n");
         }
