@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.AfterAll;
@@ -37,21 +38,21 @@ public class TreeTest {
 
     }
 
-    // @Test
-    // public void testAddWithToObjects() throws IOException, NoSuchAlgorithmException {
-    //     // Test adding a file to the Tree
-    //     String newFileContent = "testing";
-    //     tree.addWithToObjects(newFileContent);
+    @Test
+    public void testAddWithToObjects() throws IOException, NoSuchAlgorithmException {
+        // Test adding a file to the Tree
+        String newFileContent = "testing";
+        tree.addWithToObjects(newFileContent);
 
-    //     // Verify that the file was added to the objects directory
-    //     String newFileName = ("./objects/" + tree.oldName);
-    //     File newFile = new File("./objects/" + tree.oldName);
-    //     assertTrue(newFile.exists());
+        // Verify that the file was added to the objects directory
+        String newFileName = ("./objects/" + tree.oldName);
+        File newFile = new File("./objects/" + tree.oldName);
+        assertTrue(newFile.exists());
 
-    //     // Verify that the file content is as expected
-    //     String fileContent = readFileContent(newFileName);
-    //     assertEquals(newFileContent, fileContent);
-    // }
+        // Verify that the file content is as expected
+        String fileContent = readFileContent(newFileName);
+        assertEquals(newFileContent, fileContent);
+    }
 
     @Test
     public void testSave() throws IOException, NoSuchAlgorithmException {
@@ -70,16 +71,39 @@ public class TreeTest {
     @Test
     public void testAlrInTree() throws IOException {
         // Test checking if a file is already in the Tree
-        String fileName = "File1";
-        String treeContent = "File1\nFile2\nFile3";
-        writeFileContent("tree", treeContent);
+        Tree tree = new Tree();
+        tree.addToTree("Bob");
 
-        assertTrue(tree.alrInTree(fileName));
+        assertTrue(tree.alrInTree("ob"));
         assertFalse(tree.alrInTree("NonExistentFile"));
     }
 
     @Test
-    public void testAddToTree() throws IOException {
+    public void testAddDirectory() throws Exception {
+        File directory = Paths.get("./advancedTest").toFile();
+        directory.mkdir();
+
+        assertTrue(directory.exists());
+
+        Tree tree = new Tree();
+        tree.addDirectory(directory);
+
+        File objects = new File("./objects");
+
+        File[] files = objects.listFiles();
+
+        ArrayList<String> ar = new ArrayList<>();
+
+        for (File file : files) {
+            ar.add(file.getName());
+        }
+        assertTrue(ar.contains("62fab9fe58f9ef1a83825775b02d2466ca183786") &&
+                   ar.contains("032544217e9609e54d911df3963bdefc53b3fdda") &&
+                   ar.contains("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+    }
+
+    @Test
+    public void testAddToTree() throws IOException, NoSuchAlgorithmException {
         // Test adding a file to the Tree
         String firstEntry = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
         String second = "blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt";
@@ -87,9 +111,8 @@ public class TreeTest {
         tree.addToTree(second);
 
         // Verify that the file was added to the tree
-        String treeContent = readFileContent("tree");
-        assertTrue(treeContent.contains("tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b"));
-        assertTrue(treeContent.contains("blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt"));
+        assertTrue(tree.alrInTree("tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b"));
+        assertTrue(tree.alrInTree("blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file1.txt"));
     }
 
     @Test

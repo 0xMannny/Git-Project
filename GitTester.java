@@ -9,5 +9,7 @@ public class GitTester {
         tree.initialize();
 
         tree.addDirectory(directory);
+
+        // Commit c = new Commit("luke", "bleh");
     }
 }

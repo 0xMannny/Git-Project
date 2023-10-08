@@ -28,6 +28,7 @@ public class IndexTest {
         bw.close();
 
         index = new Index();
+        index.init();
         b = new ABlob();
 
     }
@@ -37,19 +38,19 @@ public class IndexTest {
         // Test if the init method creates the necessary directories and files
         index.init();
         File objectsDir = new File("./objects");
-        File indexFile = new File("./index.txt");
+        File indexFile = new File("./index");
 
         assertTrue(objectsDir.exists() && objectsDir.isDirectory());
         assertTrue(indexFile.exists() && indexFile.isFile());
     }
 
     @Test
-    public void testAdd() throws IOException, NoSuchAlgorithmException {
+    public void testAdd() throws Exception {
         // Test adding and removing files from the index
 
         // Add the file to the index
         index.add(file);
-        BufferedReader br = new BufferedReader(new FileReader(fileToTest));
+        BufferedReader br = new BufferedReader(new FileReader("./index"));
         StringBuilder sb = new StringBuilder();
         while(br.ready())
         {
@@ -60,7 +61,7 @@ public class IndexTest {
     }
 
      @Test
-    public void testRemove() throws IOException, NoSuchAlgorithmException {
+    public void testRemove() throws Exception {
         // Test adding and removing files from th3e index
         File testFile = new File("./test.txt");
         testFile.createNewFile();
@@ -91,7 +92,7 @@ public class IndexTest {
     }
 
     @Test
-    public void testUpdateIndex() throws IOException, NoSuchAlgorithmException {
+    public void testUpdateIndex() throws Exception {
         // Test the updateIndex method
         File testFile = new File("./test.txt");
         testFile.createNewFile();
@@ -101,7 +102,7 @@ public class IndexTest {
 
         // Update the index and check if the file is present in the index file
         index.updateIndex();
-        String indexContent = index.readFile(new File("./index.txt"));
+        String indexContent = index.readFile(new File("./index"));
         assertTrue(indexContent.contains(testFile.getName()));
     }
 }

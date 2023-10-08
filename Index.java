@@ -18,7 +18,7 @@ public class Index {
 
     public void init() throws IOException {
         new File("./objects").mkdir();
-        File index = new File("./index.txt");
+        File index = new File("./index");
         index.createNewFile();
     }
 
@@ -42,7 +42,7 @@ public class Index {
         for (int i = 0; i < namesAndHashes.size(); i++) {
             output += namesAndHashes.get(i) + "\n";
         }
-        FileWriter writer = new FileWriter("./index.txt");
+        FileWriter writer = new FileWriter("./index");
         writer.write(output);
         writer.flush();
         writer.close();
@@ -67,18 +67,27 @@ public class Index {
         return output;
     }
 
-    public void add(File file) throws FileNotFoundException, NoSuchAlgorithmException, IOException {
+    public void add(File file) throws Exception {
         String hash = blob.sha1(readFile(file));
-        if (!(namesAndHashes.contains(file.getName() + " : " + hash))) {
+        if (!(namesAndHashes.contains("blob : " + hash + " : " + file.getName()))) {
             blob.blobFile(file);
-            namesAndHashes.add(file.getName() + " : " + hash);
+            namesAndHashes.add("blob : " + hash + " : " + file.getName());
         }
         updateIndex();
     }
 
-    public void remove(File file) throws IOException, NoSuchAlgorithmException {
+    public void addDirectory(File directory) throws Exception {
+        Tree tree = new Tree();
+        String hash = tree.addDirectory(directory);
+        if (!(namesAndHashes.contains("tree : " + hash + " : " + directory.getName()))) {
+            namesAndHashes.add("tree : " + hash + " : " + directory.getName());
+        }
+        updateIndex();
+    }
+
+    public void remove(File file) throws Exception {
         String hash = blob.sha1(readFile(file));
-        if (namesAndHashes.contains(file.getName() + " : " + hash)) {
+        if (namesAndHashes.contains("tree : " + hash + " : " + file.getName()) || namesAndHashes.contains("blob : " + hash + " : " + file.getName())) {
             namesAndHashes.remove(file.getName() + " : " + hash);
         }
         updateIndex();

@@ -106,12 +106,19 @@ public class Tree {
 
     // checks if the file is already in the Index list
     public Boolean alrInTree(String shaOfFile) throws IOException {
-        return values.contains(shaOfFile);
+        for (String value : values) {
+            if (value.contains(shaOfFile)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // adds the file to the index if it doesn't already exist
     public void addToTree(String fileName) throws IOException {
-        values.add(fileName);
+        if (!alrInTree(fileName)) {
+            values.add(fileName);
+        }
     }
 
     public void removeFromTree(String fileName) throws IOException {

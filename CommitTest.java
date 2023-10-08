@@ -75,14 +75,14 @@ public class CommitTest {
         Commit c = new Commit ("luke", "bleh");
         
         StringBuilder contents = new StringBuilder("");
-       contents.append("f3f6a1540a168e8c332ef06679ccb57649b957b1\n"); //the sha1 for an empty tree ig
+       contents.append("da39a3ee5e6b4b0d3255bfef95601890afd80709\n"); //the sha1 for an empty tree ig
 
        //the two empty commits
        contents.append("\n");
        contents.append("\n");
 
        contents.append("luke\n");
-       contents.append(Commit.getDate()+"\n");
+       contents.append(c.getOldDate()+"\n");
        contents.append("bleh");
 
        String c1 = contents.toString().substring(contents.toString().indexOf("\n"));
@@ -97,19 +97,19 @@ public class CommitTest {
 
         StringBuilder contents = new StringBuilder();
 
-       contents.append("f3f6a1540a168e8c332ef06679ccb57649b957b1\n"); //the sha1 for an empty tree ig
+       contents.append("da39a3ee5e6b4b0d3255bfef95601890afd80709\n"); //the sha1 for an empty tree ig
 
        //the two empty commits
        contents.append("\n");
        contents.append("\n");
 
        contents.append("luke\n");
-       contents.append(Commit.getDate()+"\n");
+       contents.append(c.getOldDate()+"\n");
        contents.append("bleh");
 
        //now just read in the file that commit makes
-       BufferedReader br = new BufferedReader(new FileReader(c.getSHA1()));
-       StringBuilder commitContents = new StringBuilder(); 
+       BufferedReader br = new BufferedReader(new FileReader("objects/" + c.getSHA1()));
+       StringBuilder commitContents = new StringBuilder();
        while (br.ready())
        {
         commitContents.append((char) br.read());
