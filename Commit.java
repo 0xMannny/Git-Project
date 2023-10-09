@@ -83,7 +83,7 @@ public class Commit {
             tree.addToTree("tree : " + getTreeHashFromCommitHash(lastCommit));
         }
 
-        BufferedReader reader = new BufferedReader(new FileReader("index"));
+        BufferedReader reader = new BufferedReader(new FileReader("./index"));
 		String line = reader.readLine();
 		while (line != null) {
 			tree.addToTree(line);
@@ -92,9 +92,8 @@ public class Commit {
 		}
 		reader.close();
 
-        File index = new File("index");
-        index.delete();
-        index.createNewFile();
+        Index index = new Index();
+        index.init();
 
         return tree.save();
     }

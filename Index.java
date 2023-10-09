@@ -19,7 +19,11 @@ public class Index {
     public void init() throws IOException {
         new File("./objects").mkdir();
         File index = new File("./index");
+        if (index.exists()) {
+            index.delete();
+        }
         index.createNewFile();
+        namesAndHashes = new ArrayList<>();
     }
 
     public String sha1(String FiletoSha1) throws IOException, NoSuchAlgorithmException
@@ -40,7 +44,10 @@ public class Index {
     public void updateIndex() throws IOException {
         String output = "";
         for (int i = 0; i < namesAndHashes.size(); i++) {
-            output += namesAndHashes.get(i) + "\n";
+            output += namesAndHashes.get(i);
+            if (i < namesAndHashes.size() - 1) {
+                output += "\n";
+            }
         }
         FileWriter writer = new FileWriter("./index");
         writer.write(output);
