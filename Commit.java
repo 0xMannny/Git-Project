@@ -85,12 +85,31 @@ public class Commit {
 
         BufferedReader reader = new BufferedReader(new FileReader("./index"));
 		String line = reader.readLine();
+        ArrayList<String> toDeleteOrEdit = new ArrayList<String>();
+        ArrayList<String> newEditedFiles = new ArrayList<String>();
 		while (line != null) {
-			tree.addToTree(line);
+            if (line.contains("*deleted*") || line.contains("*edited*")) {
+                toDeleteOrEdit.add(line.substring(line.indexOf(" ") + 1));
+                if (line.contains("*edited*")) {
+                    String hash = getSHA1(readFile(new File(line.substring(9))));
+                    tree.addToTree("blob : " + hash + " : " + line.substring(9));
+                }
+            } else {
+                tree.addToTree(line);
+            }
 			// read next line
 			line = reader.readLine();
 		}
 		reader.close();
+
+        if (toDeleteOrEdit.size() > 0) {
+            String toPoint = tree.deleteOrEditTreesAndTraverse(toDeleteOrEdit, getTreeHashFromCommitHash(lastCommit));
+            if (toPoint != "") {
+                tree.changeTreeToPoint(toPoint);
+            } else {
+                tree.removeFrontOfTree();
+            }
+        }
 
         Index index = new Index();
         index.init();
@@ -155,5 +174,24 @@ public class Commit {
         String text = br.readLine();
         br.close();
         return text;
+    }
+
+    public String readFile(File file) throws FileNotFoundException, IOException {
+        String output = "";
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            int i = 0;
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
+                if (i == 1) {
+                    output += "\n";
+                }
+                output += line;
+                i = 1;
+            }
+        }
+        return output;
     }
 }

@@ -199,30 +199,30 @@ public class CommitTest {
         Commit commit4 = new Commit("Manny", "Fourth Commit", commit3Hash);
         String commit4Hash = commit4.getSHA1();
 
-        // Testing if Tree Hash is Correct also verifies the content is correct, otherwise it would be the wrong hash
+        // Testing if Tree Hash is Correct also verifies the content is correct, otherwise it would be the wrong
 
         // First Commit
 
         assertTrue("Tree Hash in Commit 1 is Wrong", getTreeHash(new File("objects/" + commit1Hash)).equals("2c89ff8aeb5fe85c1c5c516551a7fabf3ed202d9"));
         assertTrue("Prev Hash in Commit 1 is Wrong", getPrevHash(new File("objects/" + commit1Hash)).equals(""));
-        assertTrue("Next Hash in Commit 1 is Wrong", getNextHash(new File("objects/" + commit1Hash)).equals("53e53d480a94201d0467096c985f55e03f090f1a"));
+        assertTrue("Next Hash in Commit 1 is Wrong", getNextHash(new File("objects/" + commit1Hash)).equals(commit2Hash));
 
         // Second Commit
 
         assertTrue("Tree Hash in Commit 2 is Wrong", getTreeHash(new File("objects/" + commit2Hash)).equals("a5b52dd73bc6f226a2551c862174ade52e7db2cb"));
-        assertTrue("Prev Hash in Commit 2 is Wrong", getPrevHash(new File("objects/" + commit2Hash)).equals("56da6c1a0325bc3e882edad73a9dfabd08d1fd38"));
-        assertTrue("Next Hash in Commit 2 is Wrong", getNextHash(new File("objects/" + commit2Hash)).equals("d4eba757ad6e463af1fd22517fa3c66f12815e38"));
+        assertTrue("Prev Hash in Commit 2 is Wrong", getPrevHash(new File("objects/" + commit2Hash)).equals(commit1Hash));
+        assertTrue("Next Hash in Commit 2 is Wrong", getNextHash(new File("objects/" + commit2Hash)).equals(commit3Hash));
 
         // Third Commit
 
         assertTrue("Tree Hash in Commit 3 is Wrong", getTreeHash(new File("objects/" + commit3Hash)).equals("f00d5c87abe5c86d69359c34a4f0f41bffc80740"));
-        assertTrue("Prev Hash in Commit 3 is Wrong", getPrevHash(new File("objects/" + commit3Hash)).equals("53e53d480a94201d0467096c985f55e03f090f1a"));
-        assertTrue("Next Hash in Commit 3 is Wrong", getNextHash(new File("objects/" + commit3Hash)).equals("b547f98e0cf750252b24066844fa73a0aa5638f5"));
+        assertTrue("Prev Hash in Commit 3 is Wrong", getPrevHash(new File("objects/" + commit3Hash)).equals(commit2Hash));
+        assertTrue("Next Hash in Commit 3 is Wrong", getNextHash(new File("objects/" + commit3Hash)).equals(commit4Hash));
 
         // Fourth Commit
 
         assertTrue("Tree Hash in Commit 4 is Wrong", getTreeHash(new File("objects/" + commit4Hash)).equals("0efe6262efec8b453552b836640afdc07a0c75a4"));
-        assertTrue("Prev Hash in Commit 4 is Wrong", getPrevHash(new File("objects/" + commit4Hash)).equals("d4eba757ad6e463af1fd22517fa3c66f12815e38"));
+        assertTrue("Prev Hash in Commit 4 is Wrong", getPrevHash(new File("objects/" + commit4Hash)).equals(commit3Hash));
         assertTrue("Next Hash in Commit 4 is Wrong", getNextHash(new File("objects/" + commit4Hash)).equals(""));
 
     }

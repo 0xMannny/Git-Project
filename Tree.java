@@ -95,6 +95,7 @@ public class Tree {
             output = sb.substring(0, sb.length() - 1);
         }
         String sha = getShaOfFileContent(output);
+
         File newFile = new File("./objects/" + sha);
         newFile.createNewFile();
         BufferedWriter bw = new BufferedWriter(new FileWriter("./objects/" + sha));
@@ -103,6 +104,97 @@ public class Tree {
 
         return sha;
     }
+
+    public String deleteOrEditTreesAndTraverse(ArrayList<String> thingsToDeleteOrEdit, String treeHash) throws Exception {
+        String treeHashToPoint = treeHash;
+        String currentTreeHash = treeHash;
+
+        // Finds the first tree that doesn't have any deleted or edited files in history
+
+        while (true) {
+            String nextTreeHash = "";
+            BufferedReader br = new BufferedReader(new FileReader("./objects/" + currentTreeHash));
+            String lineOfFile = br.readLine();
+            if (lineOfFile.length() == 47) {
+                nextTreeHash = lineOfFile.substring(7, 47);
+                br.readLine();
+            }
+            while (lineOfFile != null) {
+                int count = 0;
+                for (String thing : thingsToDeleteOrEdit) {
+                    if (lineOfFile.contains(thing)) {
+                        count++;
+                    }
+                }
+                if (count > 0) {
+                    treeHashToPoint = currentTreeHash;
+                }
+                lineOfFile = br.readLine();
+            }
+            br.close();
+            if (nextTreeHash == "") {
+                break;
+            } else {
+                currentTreeHash = nextTreeHash;
+            }
+        }
+
+        BufferedReader tempbr = new BufferedReader(new FileReader("./objects/" + treeHashToPoint));
+        String templineOfFile = tempbr.readLine();
+        tempbr.close();
+        if (templineOfFile.length() == 47) {
+            treeHashToPoint = templineOfFile;
+        } else {
+            treeHashToPoint = "";
+        }
+
+        // Adds all the non deleted/edited files in the skipped trees to new tree
+
+        ArrayList<String> lines = new ArrayList<String>();
+
+        currentTreeHash = treeHash;
+        while (true) {
+            String nextTreeHash = "";
+            BufferedReader br = new BufferedReader(new FileReader("./objects/" + currentTreeHash));
+            String lineOfFile = br.readLine();
+            if (treeHashToPoint == "") {
+                if (lineOfFile.length() == 47) {
+                    nextTreeHash = lineOfFile.substring(7, 47);
+                    lineOfFile = br.readLine();
+                }
+            } else {
+                if (!lineOfFile.contains(treeHashToPoint)) {
+                    nextTreeHash = lineOfFile.substring(7, 47);
+                }
+                lineOfFile = br.readLine();
+            }
+            while (lineOfFile != null) {
+                int count = 0;
+                for (String thing : thingsToDeleteOrEdit) {
+                    if (lineOfFile.contains(thing)) {
+                        count++;
+                    }
+                }
+                if (count == 0) {
+                    lines.add(lineOfFile);
+                }
+                lineOfFile = br.readLine();
+            }
+            br.close();
+            if (nextTreeHash == "") {
+                break;
+            } else {
+                currentTreeHash = nextTreeHash;
+            }
+        }
+
+        for (String line : lines) {
+            values.add(line);
+        }
+
+        return treeHashToPoint;
+    }
+
 
     // checks if the file is already in the Index list
     public Boolean alrInTree(String shaOfFile) throws IOException {
@@ -121,10 +213,20 @@ public class Tree {
         }
     }
 
+    public void changeTreeToPoint(String fileName) throws IOException {
+        if (values.get(0).length() == 47) {
+            values.set(0, fileName);
+        }
+    }
+
     public void removeFromTree(String fileName) throws IOException {
         if (alrInTree(fileName)) {
             values.remove(fileName);
         }
+    }
+
+    public void removeFrontOfTree() throws IOException {
+        values.remove(0);
     }
 
     public void initialize() throws IOException {

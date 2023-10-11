@@ -74,6 +74,15 @@ public class Index {
         return output;
     }
 
+    public void deleteOrEditFile(String input) throws Exception{
+        if (input.contains("*deleted*")) {
+            namesAndHashes.add(input);
+        } else if (input.contains("*edited*")) {
+            namesAndHashes.add(input);
+        }
+        updateIndex();
+    }
+
     public void add(File file) throws Exception {
         String hash = blob.sha1(readFile(file));
         if (!(namesAndHashes.contains("blob : " + hash + " : " + file.getName()))) {
@@ -98,5 +107,10 @@ public class Index {
             namesAndHashes.remove(file.getName() + " : " + hash);
         }
         updateIndex();
+    }
+
+    public boolean contains(String input) throws Exception {
+        String output = readFile(new File("./index"));
+        return output.contains(input);
     }
 }
