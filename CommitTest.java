@@ -229,6 +229,89 @@ public class CommitTest {
 
 
     @Test
+    void testFiveCommits() throws Exception {
+
+        // Setup Files, Directories, Index, and Commit
+
+        File dir1 = new File("./advancedTest");
+        File dir2 = new File("./advancedTest/test3");
+        for (int i = 0; i < 8; i++) {
+            createFile("file" + i + ".txt", "content" + i);
+        }
+        Index index1 = new Index();
+        index1.init();
+        Index index2 = new Index();
+        index2.init();
+        Index index3 = new Index();
+        index3.init();
+        Index index4 = new Index();
+        index4.init();
+        Index index5 = new Index();
+        index5.init();
+
+        index1.add(new File("file0.txt"));
+        index1.add(new File("file1.txt"));
+        index1.addDirectory(dir1);
+
+        Commit commit1 = new Commit("Manny", "First Commit");
+        String commit1Hash = commit1.getSHA1();
+
+        index2.add(new File("file2.txt"));
+        index2.add(new File("file3.txt"));
+        index2.addDirectory(dir2);
+
+        Commit commit2 = new Commit("Manny", "Second Commit", commit1Hash);
+        String commit2Hash = commit2.getSHA1();
+
+        index3.add(new File("file4.txt"));
+        index3.add(new File("file5.txt"));
+        index3.deleteOrEditFile("*deleted* file2.txt");
+
+        Commit commit3 = new Commit("Manny", "Third Commit", commit2Hash);
+        String commit3Hash = commit3.getSHA1();
+
+        index4.add(new File("file6.txt"));
+        index4.add(new File("file7.txt"));
+
+        Commit commit4 = new Commit("Manny", "Fourth Commit", commit3Hash);
+        String commit4Hash = commit4.getSHA1();
+
+        index5.deleteOrEditFile("*edited* file6.txt");
+        index5.deleteOrEditFile("*deleted* file0.txt");
+
+        Commit commit5 = new Commit("Manny", "Fifth Commit", commit4Hash);
+        String commit5Hash = commit5.getSHA1();
+
+        // Testing if Tree Hash is Correct also verifies the content is correct, otherwise it would be the wrong
+
+        // First Commit
+
+        assertTrue("Tree Hash in Commit 1 is Wrong", getTreeHash(new File("objects/" + commit1Hash)).equals("2c89ff8aeb5fe85c1c5c516551a7fabf3ed202d9"));
+        assertTrue("Previous Tree Hash in Commit 1 is incorrect", getFirstLineOfFile(new File("objects/" + getTreeHash(new File("objects/" + commit1Hash)))).equals("blob : e28d139734a42a269c4becdbbfb528f1f51d2739 : file0.txt"));
+
+        // Second Commit
+
+        assertTrue("Tree Hash in Commit 2 is Wrong", getTreeHash(new File("objects/" + commit2Hash)).equals("a5b52dd73bc6f226a2551c862174ade52e7db2cb"));
+        assertTrue("Previous Tree Hash in Commit 2 is incorrect", getFirstLineOfFile(new File("objects/" + getTreeHash(new File("objects/" + commit2Hash)))).equals("tree : 2c89ff8aeb5fe85c1c5c516551a7fabf3ed202d9"));
+
+        // Third Commit
+
+        assertTrue("Tree Hash in Commit 3 is Wrong", getTreeHash(new File("objects/" + commit3Hash)).equals("dd100a538dbeaeb44c4ebe47d5902d6b70b3a0f9"));
+        assertTrue("Previous Tree Hash in Commit 3 is incorrect", getFirstLineOfFile(new File("objects/" + getTreeHash(new File("objects/" + commit3Hash)))).equals("tree : 2c89ff8aeb5fe85c1c5c516551a7fabf3ed202d9"));
+
+        // Fourth Commit
+
+        assertTrue("Tree Hash in Commit 4 is Wrong", getTreeHash(new File("objects/" + commit4Hash)).equals("428b9bc0db2380fcacf9206aa1c02736174e53f9"));
+        assertTrue("Previous Tree Hash in Commit 4 is incorrect", getFirstLineOfFile(new File("objects/" + getTreeHash(new File("objects/" + commit4Hash)))).equals("tree : dd100a538dbeaeb44c4ebe47d5902d6b70b3a0f9"));
+
+        // Fifth Commit
+
+        assertTrue("Tree Hash in Commit 5 is Wrong", getTreeHash(new File("objects/" + commit5Hash)).equals("cd8da74f4e907a2e35a9bf9512dbf397b992b9b1"));
+        assertTrue("Previous Tree Hash in Commit 5 is incorrect", getFirstLineOfFile(new File("objects/" + getTreeHash(new File("objects/" + commit5Hash)))).equals("blob : d50f83291ceabd6e2cbf70c0312e58ab296476df : file6.txt"));
+    }
+
+
+    @Test
     void testGetDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
         LocalDateTime now = LocalDateTime.now();  
@@ -296,6 +379,13 @@ public class CommitTest {
         pw1.print(content); 
         pw1.close();
         return file1;
+    }
+
+    public String getFirstLineOfFile(File file) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String text = br.readLine();
+        br.close();
+        return text;
     }
 
     public String getTreeHash(File file) throws Exception {

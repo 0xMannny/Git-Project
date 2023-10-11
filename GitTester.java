@@ -20,6 +20,8 @@ public class GitTester {
         index3.init();
         Index index4 = new Index();
         index4.init();
+        Index index5 = new Index();
+        index5.init();
 
         index1.add(new File("file0.txt"));
         index1.add(new File("file1.txt"));
@@ -37,28 +39,27 @@ public class GitTester {
 
         index3.add(new File("file4.txt"));
         index3.add(new File("file5.txt"));
+        index3.deleteOrEditFile("*deleted* file2.txt");
 
         Commit commit3 = new Commit("Manny", "Third Commit", commit2Hash);
         String commit3Hash = commit3.getSHA1();
 
         index4.add(new File("file6.txt"));
         index4.add(new File("file7.txt"));
-        index4.deleteOrEditFile("*deleted* file4.txt");
 
         Commit commit4 = new Commit("Manny", "Fourth Commit", commit3Hash);
         String commit4Hash = commit4.getSHA1();
 
-        // Index index5 = new Index();
-        // index5.init();
+        index5.deleteOrEditFile("*edited* file6.txt");
+        index5.deleteOrEditFile("*deleted* file0.txt");
 
-        // index5.deleteOrEditFile("*deleted* file5.txt");
-
-        // Commit commit5 = new Commit("Manny", "Fifth Commit", commit4Hash);
-        // String commit5Hash = commit5.getSHA1();
-
-        // System.out.println(commit5Hash);
+        Commit commit5 = new Commit("Manny", "Fifth Commit", commit4Hash);
+        String commit5Hash = commit5.getSHA1();
 
     }
+
+
+
 
     public static File createFile(String fileName, String content) throws Exception {
         File file1 = new File(fileName);
