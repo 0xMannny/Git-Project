@@ -9,7 +9,7 @@ public class GitTester {
     public static void main(String[] args) throws Exception {
         File dir1 = new File("./advancedTest");
         File dir2 = new File("./advancedTest/test3");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 4; i++) {
             createFile("file" + i + ".txt", "content" + i);
         }
         Index index1 = new Index();
@@ -25,36 +25,19 @@ public class GitTester {
 
         index1.add(new File("file0.txt"));
         index1.add(new File("file1.txt"));
-        index1.addDirectory(dir1);
 
         Commit commit1 = new Commit("Manny", "First Commit");
         String commit1Hash = commit1.getSHA1();
 
-        index2.add(new File("file2.txt"));
-        index2.add(new File("file3.txt"));
-        index2.addDirectory(dir2);
+        File file = new File("file1.txt");
+        file.delete();
+
+        index2.deleteOrEditFile("*deleted* file1.txt");
 
         Commit commit2 = new Commit("Manny", "Second Commit", commit1Hash);
         String commit2Hash = commit2.getSHA1();
 
-        index3.add(new File("file4.txt"));
-        index3.add(new File("file5.txt"));
-        index3.deleteOrEditFile("*deleted* file2.txt");
-
-        Commit commit3 = new Commit("Manny", "Third Commit", commit2Hash);
-        String commit3Hash = commit3.getSHA1();
-
-        index4.add(new File("file6.txt"));
-        index4.add(new File("file7.txt"));
-
-        Commit commit4 = new Commit("Manny", "Fourth Commit", commit3Hash);
-        String commit4Hash = commit4.getSHA1();
-
-        index5.deleteOrEditFile("*edited* file6.txt");
-        index5.deleteOrEditFile("*deleted* file0.txt");
-
-        Commit commit5 = new Commit("Manny", "Fifth Commit", commit4Hash);
-        String commit5Hash = commit5.getSHA1();
+        commit2.checkout(commit1Hash);
 
     }
 

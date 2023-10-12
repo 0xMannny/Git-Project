@@ -168,6 +168,34 @@ public class Commit {
         pw.close();
     }
 
+    public void checkout(String sha1OfCommit) throws Exception {
+        String treeHashOfCommit = getTreeHashFromCommitHash(sha1OfCommit);
+        File fileOfTree = new File("objects/" + treeHashOfCommit);
+        BufferedReader br = new BufferedReader(new FileReader(fileOfTree));
+
+        String lineOfFile = br.readLine();
+        if (lineOfFile != null && lineOfFile.length() == 47) {
+            lineOfFile = br.readLine();
+        }
+        while (lineOfFile != null) {
+            int indexOfFileNameInLine = lineOfFile.lastIndexOf(" ");
+            String nameOfFile = lineOfFile.substring(indexOfFileNameInLine + 1);
+            File fileToChange = new File(nameOfFile);
+            if (!fileToChange.exists()) {
+                fileToChange.createNewFile();
+            }
+            String contentOfOldFile = readFile(new File("objects/" + lineOfFile.substring(7, 47)));
+
+            FileWriter writer = new FileWriter(fileToChange);
+            writer.write(contentOfOldFile);
+            writer.flush();
+            writer.close();
+
+            lineOfFile = br.readLine();
+        }
+        br.close();
+    }
+
     public String getTreeHashFromCommitHash(String commitHash) throws Exception{
         File commit = new File("objects/" + commitHash);
         BufferedReader br = new BufferedReader(new FileReader(commit));
