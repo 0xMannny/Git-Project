@@ -29,20 +29,23 @@ public class GitTester {
         Commit commit1 = new Commit("Manny", "First Commit");
         String commit1Hash = commit1.getSHA1();
 
-        File file = new File("file1.txt");
-        file.delete();
-
-        index2.deleteOrEditFile("*deleted* file1.txt");
+        index2.add(new File("file2.txt"));
+        index2.add(new File("file3.txt"));
 
         Commit commit2 = new Commit("Manny", "Second Commit", commit1Hash);
         String commit2Hash = commit2.getSHA1();
 
-        commit2.checkout(commit1Hash);
+        File file = new File("file1.txt");
+        file.delete();
+
+        index3.deleteOrEditFile("*deleted* file1.txt");
+
+        Commit commit3 = new Commit("Manny", "Third Commit", commit2Hash);
+        String commit3Hash = commit3.getSHA1();
+
+        commit3.checkout(commit2Hash);
 
     }
-
-
-
 
     public static File createFile(String fileName, String content) throws Exception {
         File file1 = new File(fileName);
